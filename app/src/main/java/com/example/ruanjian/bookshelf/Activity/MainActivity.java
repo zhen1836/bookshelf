@@ -41,8 +41,12 @@ public class MainActivity extends AppCompatActivity
     private CoordinatorLayout appBarMainLayout;
     private RecyclerView bookListView;
     private BookAdapter bookAdapter;
+    //是否选中了书架
+    private boolean isInBookshelf = false;
     //所有书籍列表
     private List<Book> bookList;
+    //当前所选书架书籍列表
+    private List<Book> curBookList;
     //当前显示的书籍列表
     private List<Book> tmpList;
     private List<Label> labels = new ArrayList<>();
@@ -167,19 +171,30 @@ public class MainActivity extends AppCompatActivity
         else if (id >= 5 && id <= 1000) {
             //点击标签
             Label curLabel = labels.get(id-5);
-            List<Book> tmp = new ArrayList<>();
-            for (int i = 0; i < tmpList.size(); i++) {
-                List<Label> subLabel = tmpList.get(i).getLabels();
-                if (subLabel.contains(curLabel)) {
-                    tmp.add(tmpList.get(i));
-                    break;
-                }
+            List<Book> tmp = null;
+            if (isInBookshelf) {
+                tmp = selectBookByLabel(curBookList, curLabel);
+            }
+            else {
+                tmp = selectBookByLabel(bookList, curLabel);
             }
             refresh(tmp);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private List<Book> selectBookByLabel(List<Book> list, Label label) {
+        List<Book> newList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            List<Label> subLabels = list.get(i).getLabels();
+            if (subLabels.contains(label)) {
+                newList.add(list.get(i));
+                break;
+            }
+        }
+        return newList;
     }
 
     class SpinnerItemSelectedListener implements AdapterView.OnItemSelectedListener {
@@ -190,8 +205,10 @@ public class MainActivity extends AppCompatActivity
             if (selected.equals("所有")) {
                 tmpList = bookList;
                 bookListView.setAdapter(new BookAdapter(tmpList));
+                isInBookshelf = false;
             }
             else {
+                isInBookshelf = true;
                 List<Book> curList = new ArrayList<>();
                 for (int i = 0; i < bookList.size(); i++) {
                     List<Bookshelf> tmplist = bookList.get(i).getBookShelfs();
@@ -202,7 +219,8 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 }
-                refresh(curList);
+                curBookList = curList;
+                refresh(curBookList);
             }
         }
 
@@ -214,17 +232,23 @@ public class MainActivity extends AppCompatActivity
 
     //测试用书籍数据初始化
     private void bookListInit() {
-        for (int i = 0; i < 6; i++) {
+        spinnerList.add("所有");
+        for (int i = 0; i < 4; i++) {
             Book book = new Book();
             book.setAuthor("阿瑟·克拉克");
             book.setCoverId(R.drawable.pic1);
-            book.setTitle("2001：太空漫游");
+            book.setTitle("2001：太空漫游"+i+"");
             book.setTranslator("郝明义");
             book.setPublisher("上海文艺出版社");
             book.setISBN("9787532170692");
+            Label label = new Label("tag"+i+"");
+            labels.add(label);
+            book.addLabel(label);
+            Bookshelf bookshelf = new Bookshelf("bookshelf"+i+"");
+            spinnerList.add(bookshelf.getTitle());
+            book.addBookshelf(bookshelf);
             bookList.add(book);
         }
-        spinnerList.add("所有");
     }
 
     //左侧抽屉绘制

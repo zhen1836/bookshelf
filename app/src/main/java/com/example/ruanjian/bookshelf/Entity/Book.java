@@ -107,6 +107,8 @@ public class Book implements Serializable {
         this.bookShelfs = bookShelfs;
     }
 
+    public void addBookshelf(Bookshelf bookshelf) { this.bookShelfs.add(bookshelf); }
+
     public String getNotes() {
         return notes;
     }
@@ -122,6 +124,8 @@ public class Book implements Serializable {
     public void setLabels(List<Label> labels) {
         this.labels = labels;
     }
+
+    public void addLabel(Label label) { this.labels.add(label); }
 
     public String getSourceWeb() {
         return sourceWeb;
