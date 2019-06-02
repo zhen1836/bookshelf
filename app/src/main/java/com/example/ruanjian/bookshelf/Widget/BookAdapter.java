@@ -16,7 +16,7 @@ import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.VH> {
     Context context;
-    List<Book> bookList;
+    private List<Book> bookList;
 
     public BookAdapter(List<Book> bookList) {
         this.bookList = bookList;
@@ -27,7 +27,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.VH> {
         private TextView title;
         private TextView info;
         private TextView pubDate;
-        public VH(@NonNull View itemView) {
+        VH(@NonNull View itemView) {
             super(itemView);
             cover = (ImageView)itemView.findViewById(R.id.bookPic);
             title = (TextView)itemView.findViewById(R.id.bookTitle);
