@@ -71,13 +71,13 @@ public class MainActivity extends AppCompatActivity
         bookListView.setAdapter(bookAdapter);
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         FloatingActionMenu fab = (FloatingActionMenu)findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity
     //测试用书籍数据初始化
     private void bookListInit() {
         spinnerList.add("所有");
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 9; i++) {
             Book book = new Book();
             book.setAuthor("阿瑟·克拉克");
             book.setCoverId(R.drawable.pic1);
