@@ -1,20 +1,39 @@
 package com.example.ruanjian.bookshelf.Entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 public class Book implements Serializable {
-    String title;
-    String author;
-    String translator;
-    String publisher;
-    String pubdate;
-    String ISBN;
-    int coverId;
-    String state;
-    String belongBookShelf;
-    String notes;
-    String tag;
-    String sourceWeb;
+    private UUID id;
+    private String title;
+    private String author;
+    private String translator;
+    private String publisher;
+    private String pubdate;
+    private String ISBN;
+    private int coverId;
+    private String state;
+    private List<Bookshelf> bookShelfs;
+    private String notes;
+    private List<Label> labels;
+    private String sourceWeb;
+
+    public Book() {
+        this.id = UUID.randomUUID();
+        bookShelfs = new LinkedList<>();
+        labels = new LinkedList<>();
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -64,6 +83,14 @@ public class Book implements Serializable {
         this.ISBN = ISBN;
     }
 
+    public int getCoverId() {
+        return coverId;
+    }
+
+    public void setCoverId(int coverId) {
+        this.coverId = coverId;
+    }
+
     public String getState() {
         return state;
     }
@@ -72,13 +99,15 @@ public class Book implements Serializable {
         this.state = state;
     }
 
-    public String getBelongBookShelf() {
-        return belongBookShelf;
+    public List<Bookshelf> getBookShelfs() {
+        return bookShelfs;
     }
 
-    public void setBelongBookShelf(String belongBookShelf) {
-        this.belongBookShelf = belongBookShelf;
+    public void setBookShelfs(List<Bookshelf> bookShelfs) {
+        this.bookShelfs = bookShelfs;
     }
+
+    public void addBookshelf(Bookshelf bookshelf) { this.bookShelfs.add(bookshelf); }
 
     public String getNotes() {
         return notes;
@@ -88,13 +117,15 @@ public class Book implements Serializable {
         this.notes = notes;
     }
 
-    public String getTag() {
-        return tag;
+    public List<Label> getLabels() {
+        return labels;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setLabels(List<Label> labels) {
+        this.labels = labels;
     }
+
+    public void addLabel(Label label) { this.labels.add(label); }
 
     public String getSourceWeb() {
         return sourceWeb;
@@ -102,13 +133,5 @@ public class Book implements Serializable {
 
     public void setSourceWeb(String sourceWeb) {
         this.sourceWeb = sourceWeb;
-    }
-
-    public int getCoverId() {
-        return coverId;
-    }
-
-    public void setCoverId(int coverId) {
-        this.coverId = coverId;
     }
 }

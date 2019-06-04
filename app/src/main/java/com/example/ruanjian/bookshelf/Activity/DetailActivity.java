@@ -14,6 +14,7 @@ import com.klinker.android.sliding.SlidingActivity;
 
 public class DetailActivity extends SlidingActivity {
     private Book book_clicked;
+    private StringBuilder setlabel= new StringBuilder();
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -90,10 +91,10 @@ public class DetailActivity extends SlidingActivity {
         if(book_clicked.getState() != null)
             statetext.setText(book_clicked.getState());
         else
-            state.setVisibility(View.GONE);
+            statetext.setText("阅读状态未设置");;
 
-        if(book_clicked.getBelongBookShelf() != null)
-            shelftext.setText(book_clicked.getBelongBookShelf());
+        if(book_clicked.getBookShelfs().size() != 0)
+            shelftext.setText(book_clicked.getBookShelfs().get(0).getTitle());
         else
             shelf.setVisibility(View.GONE);
 
@@ -102,8 +103,13 @@ public class DetailActivity extends SlidingActivity {
         else
             note.setVisibility(View.GONE);
 
-        if(book_clicked.getTag() != null)
-            labeltext.setText(book_clicked.getTag());
+        if(book_clicked.getLabels().size() != 0){
+            setlabel.append(book_clicked.getLabels().get(0).getTitle());
+            for(int i = 1; i < book_clicked.getLabels().size(); i++){
+                setlabel.append("，"+book_clicked.getLabels().get(i).getTitle());
+            }
+            labeltext.setText(setlabel.toString());
+        }
         else
             label.setVisibility(View.GONE);
 
