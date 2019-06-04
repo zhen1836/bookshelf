@@ -1,6 +1,7 @@
 package com.example.ruanjian.bookshelf.Activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +9,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.ruanjian.bookshelf.Entity.Book;
 import com.example.ruanjian.bookshelf.Entity.Bookshelf;
@@ -28,6 +32,8 @@ import com.example.ruanjian.bookshelf.Entity.Label;
 import com.example.ruanjian.bookshelf.R;
 import com.example.ruanjian.bookshelf.Widget.BookAdapter;
 import com.github.clans.fab.FloatingActionMenu;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.common.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +51,10 @@ public class MainActivity extends AppCompatActivity
     private boolean isInBookshelf = false;
     //所有书籍列表
     private List<Book> bookList;
+    private com.github.clans.fab.FloatingActionButton fab1;
+    private int REQUEST_CODE_SCAN=0;
+    //搜索框
+    private SearchView mSearchView;
     //当前所选书架书籍列表
     private List<Book> curBookList;
     //当前显示的书籍列表
@@ -56,11 +66,16 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         appBarMainLayout = (CoordinatorLayout)findViewById(R.id.appBarMain);
         //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //初始化搜索框
+        mSearchView=(SearchView)findViewById(R.id.searchview);
+        mSearchView.setSubmitButtonEnabled(true);
+        mSearchView.setOnQueryTextListener(new searchListener());
+
         //初始化书籍列表view
         bookList = new ArrayList<>();
         bookListInit();
@@ -78,6 +93,15 @@ public class MainActivity extends AppCompatActivity
 //                        .setAction("Action", null).show();
 //            }
 //        });
+
+        fab1= (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_menu_item_1);
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,CaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_SCAN);
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -97,6 +121,21 @@ public class MainActivity extends AppCompatActivity
         Paint_Menu();
 
 
+    }
+
+    // 扫描二维码/条码回传
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+            if (data != null) {
+
+                String content = data.getStringExtra(Constant.CODED_CONTENT);
+                Log.v("ISBN",content);
+            }
+        }
     }
 
     @Override
@@ -141,6 +180,9 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
             //点击书籍
         } else if (id == 1) {
+             mSearchView.setFocusable(true);
+             mSearchView.setIconified(false);
+             mSearchView.requestFocusFromTouch();
             //点击搜索
         } else if (id == 2) {
             //添加新标签
@@ -249,6 +291,20 @@ public class MainActivity extends AppCompatActivity
             book.addBookshelf(bookshelf);
             bookList.add(book);
         }
+        Book book = new Book();
+        book.setAuthor("阿瑟·克拉克");
+        book.setCoverId(R.drawable.pic1);
+        book.setTitle("123456");
+        book.setTranslator("郝明义");
+        book.setPublisher("上海文艺出版社");
+        book.setISBN("9787532170692");
+        Label label = new Label("tag"+3+"");
+        labels.add(label);
+        book.addLabel(label);
+        Bookshelf bookshelf = new Bookshelf("bookshelf"+3);
+        spinnerList.add(bookshelf.getTitle());
+        book.addBookshelf(bookshelf);
+        bookList.add(book);
     }
 
     //左侧抽屉绘制
@@ -280,4 +336,30 @@ public class MainActivity extends AppCompatActivity
         bookListView.setAdapter(new BookAdapter(tmpList));
     }
 
+
+    private class searchListener implements SearchView.OnQueryTextListener {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            Log.v("query:",query);
+            List<Book> tmp = new ArrayList<>();
+            for (Book book:bookList
+                 ) {
+                if(book.getAuthor().indexOf(query)!=-1||book.getTitle().indexOf(query)!=-1||book.getPublisher().indexOf(query)!=-1)
+                    tmp.add(book);
+            }
+            if(!tmp.isEmpty())
+                refresh(tmp);
+            else {
+                Toast.makeText(MainActivity.this,"未找到该图书！",Toast.LENGTH_LONG).show();
+            }
+
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String query) {
+            Log.v("query:",query);
+            return false;
+        }
+    }
 }
