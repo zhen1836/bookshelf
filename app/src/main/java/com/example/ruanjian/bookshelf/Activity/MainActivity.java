@@ -1,5 +1,6 @@
 package com.example.ruanjian.bookshelf.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.example.ruanjian.bookshelf.Entity.Book;
 import com.example.ruanjian.bookshelf.R;
@@ -67,7 +69,24 @@ public class MainActivity extends AppCompatActivity
         bookAdapter = new BookAdapter(bookList);
         bookListView.setLayoutManager(new LinearLayoutManager(this));
         bookListView.setAdapter(bookAdapter);
+
+        Button test = (Button) findViewById(R.id.Test);
+        test.setOnClickListener(new ListClick());
     }
+
+    class ListClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, DetailActivity.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("title","齐天大圣");
+//            intent.putExtras(bundle);
+            intent.putExtra("book",bookList.get(1));
+            startActivity(intent);
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
