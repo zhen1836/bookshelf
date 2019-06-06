@@ -30,6 +30,16 @@
                 android:theme="@style/AppTheme">
             </android.support.v7.widget.Toolbar>
 
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/edit_toolbar"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:fitsSystemWindows="true"
+                android:minHeight="?attr/actionBarSize"
+                android:background="?attr/colorPrimaryDark"
+                android:theme="@style/AppTheme">
+            </android.support.v7.widget.Toolbar>
+
             <ImageButton
                 android:id="@+id/book_img"
                 android:layout_width="101dp"

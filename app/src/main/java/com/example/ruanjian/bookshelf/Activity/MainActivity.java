@@ -2,8 +2,6 @@ package com.example.ruanjian.bookshelf.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -71,7 +69,7 @@ public class MainActivity extends AppCompatActivity
             bookList = new ArrayList<>();
             bookListInit();
         }
-        
+
         //labels = (ArrayList<Label>)getIntent().getSerializableExtra("labels") ;
         //bookshelves = (ArrayList<Bookshelf>)getIntent().getSerializableExtra("shelfs") ;
 
@@ -295,7 +293,6 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < 4; i++) {
             Book book = new Book();
             book.setAuthor("阿瑟·克拉克");
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pic1);
             book.setCoverId(R.drawable.pic1);
             book.setTitle("2001：太空漫游"+i+"");
             book.setTranslator("郝明义");
