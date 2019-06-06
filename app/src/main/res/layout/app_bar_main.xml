@@ -19,40 +19,40 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--<include layout="@layout/content_main" />-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/booklist_recycler_view"
+        android:paddingTop="72dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="80dp">
+        android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
 
 
-    <Button
-        android:id="@+id/Test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:text="Test" />
+    <!--<include layout="@layout/content_main" />-->
+
+
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fab"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:paddingLeft="10dp"
+        android:layout_alignParentEnd="true"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
-        fab:menu_backgroundColor="#ccffffff"
+        android:paddingLeft="10dp"
         fab:menu_labels_ellipsize="end"
-        fab:menu_labels_singleLine="true">
+        fab:menu_labels_singleLine="true"
+        fab:menu_backgroundColor="#ccffffff">
 
 
         <com.github.clans.fab.FloatingActionButton
@@ -60,16 +60,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_edit"
-            fab:fab_label="@string/fab_menu_1"
-            fab:fab_size="mini" />
+            fab:fab_size="mini"
+            fab:fab_label="@string/fab_menu_1" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_menu_item_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_edit"
-            fab:fab_label="@string/fab_menu_2"
-            fab:fab_size="mini" />
+            fab:fab_size="mini"
+            fab:fab_label="@string/fab_menu_2" />
     </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.design.widget.CoordinatorLayout>

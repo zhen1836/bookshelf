@@ -27,11 +27,13 @@
             <TextView
                 android:id="@+id/Info_source"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="信息(来源：aaa)"
                 android:textColor="#A39E9E"
-                android:textSize="24sp" />
+                android:textSize="12sp" />
 
             <View
                 android:layout_width="fill_parent"
@@ -45,20 +47,25 @@
 
                 <ImageView
                     android:id="@+id/author_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="32dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/user" />
 
                 <TextView
                     android:id="@+id/author_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="80dp"
-                    android:layout_marginTop="24dp"
                     android:text="编者：我自己"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textColorLink="#4456B8"
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -68,20 +75,24 @@
 
                 <ImageView
                     android:id="@+id/translator_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="32dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/users" />
 
                 <TextView
                     android:id="@+id/translator_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="80dp"
-                    android:layout_marginTop="24dp"
                     android:text="暨南大学"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -91,20 +102,24 @@
 
                 <ImageView
                     android:id="@+id/publisher_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="32dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/puler" />
 
                 <TextView
                     android:id="@+id/publisher_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="80dp"
-                    android:layout_marginTop="24dp"
                     android:text="暨南大学"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -114,20 +129,24 @@
 
                 <ImageView
                     android:id="@+id/time_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="32dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/date" />
 
                 <TextView
                     android:id="@+id/time_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="80dp"
-                    android:layout_marginTop="24dp"
                     android:text="暨南大学"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -137,20 +156,24 @@
 
                 <ImageView
                     android:id="@+id/ISBN_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="32dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/isbn" />
 
                 <TextView
                     android:id="@+id/ISBN_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="80dp"
-                    android:layout_marginTop="24dp"
                     android:text="暨南大学"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -158,28 +181,30 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="fill_parent"
-        android:layout_height="440dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:elevation="2dp"
-        app:cardBackgroundColor = "@android:color/white"
+        app:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="2dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="457dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
 
             <TextView
                 android:id="@+id/detail"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="详情"
-                android:textSize="24sp" />
+                android:textSize="12sp" />
 
             <View
                 android:layout_width="fill_parent"
@@ -194,20 +219,26 @@
 
                 <ImageView
                     android:id="@+id/state_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="32dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/blue_state" />
 
                 <TextView
                     android:id="@+id/state_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="80dp"
-                    android:layout_marginTop="24dp"
                     android:text="编者：我自己"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -217,20 +248,24 @@
 
                 <ImageView
                     android:id="@+id/shelf_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="32dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/blue_shelf" />
 
                 <TextView
                     android:id="@+id/shelf_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="80dp"
-                    android:layout_marginTop="24dp"
                     android:text="暨南大学"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -240,20 +275,24 @@
 
                 <ImageView
                     android:id="@+id/note_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="32dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/blue_note" />
 
                 <TextView
                     android:id="@+id/note_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="80dp"
-                    android:layout_marginTop="24dp"
                     android:text="暨南大学"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -263,20 +302,24 @@
 
                 <ImageView
                     android:id="@+id/label_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="32dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/blue_label" />
 
                 <TextView
                     android:id="@+id/label_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="80dp"
-                    android:layout_marginTop="24dp"
                     android:text="暨南大学"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -286,20 +329,24 @@
 
                 <ImageView
                     android:id="@+id/web_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="32dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/blue_web" />
 
                 <TextView
                     android:id="@+id/web_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="80dp"
-                    android:layout_marginTop="24dp"
                     android:text="暨南大学"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
