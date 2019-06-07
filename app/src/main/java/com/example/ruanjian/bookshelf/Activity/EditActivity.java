@@ -462,10 +462,9 @@ public class EditActivity extends AppCompatActivity {
 
     private void save() {
         //Toast.makeText(EditActivity.this, "Save !", Toast.LENGTH_SHORT).show();
-
-        Bitmap bitmap = ((BitmapDrawable)imgButton.getDrawable()).getBitmap();
+        Bitmap bitmap2 = ((BitmapDrawable)imgButton.getDrawable()).getBitmap();
         //book_clicked.setCoverId(new MyBitmap(BytesBitmap.getBytes(bitmap)));
-        book_clicked.setCoverId(BytesBitmap.getBytes(bitmap));
+        book_clicked.setCoverId(BytesBitmap.getBytes(bitmap2));
         if(titletext.getText().length() == 0){
             Toast.makeText(EditActivity.this, "标题不能为空！", Toast.LENGTH_SHORT).show();
             return ;

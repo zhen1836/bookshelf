@@ -349,6 +349,7 @@ public class MainActivity extends AppCompatActivity
                 labels =(ArrayList<Label>) data.getSerializableExtra("labels");
                 bookshelves = (ArrayList<Bookshelf>) data.getSerializableExtra("shelfs");
                 if(book_position != -1) {
+                    bookList.get(book_position).setCoverId(book_clicked.getCoverId());
                     bookList.get(book_position).setTitle(book_clicked.getTitle());
                     bookList.get(book_position).setTranslator(book_clicked.getTranslator());
                     bookList.get(book_position).setPublisher(book_clicked.getPublisher());
