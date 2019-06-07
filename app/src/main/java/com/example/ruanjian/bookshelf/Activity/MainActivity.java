@@ -345,10 +345,10 @@ public class MainActivity extends AppCompatActivity
         //添加日记
         if (requestCode == REQUEST_CODE) {
             if (resultCode == DetailActivity.RESULT_CODE) {
+                book_clicked = (Book) data.getSerializableExtra("book");
+                labels =(ArrayList<Label>) data.getSerializableExtra("labels");
+                bookshelves = (ArrayList<Bookshelf>) data.getSerializableExtra("shelfs");
                 if(book_position != -1) {
-                    book_clicked = (Book) data.getSerializableExtra("book");
-                    labels =(ArrayList<Label>) data.getSerializableExtra("labels");
-                    bookshelves = (ArrayList<Bookshelf>) data.getSerializableExtra("shelfs");
                     bookList.get(book_position).setTitle(book_clicked.getTitle());
                     bookList.get(book_position).setTranslator(book_clicked.getTranslator());
                     bookList.get(book_position).setPublisher(book_clicked.getPublisher());
@@ -364,8 +364,16 @@ public class MainActivity extends AppCompatActivity
                     operater.save(MainActivity.this.getBaseContext(), (Serializable) bookList);
                     refresh(bookList);
                     bookAdapter.notifyDataSetChanged();
+                    book_position = -1;
                 }
-                book_position = -1;
+                else {
+                    bookList.add(book_clicked);
+
+                    BookCollectionOperater operater = new BookCollectionOperater();
+                    operater.save(MainActivity.this.getBaseContext(), (Serializable) bookList);
+                    refresh(bookList);
+                    bookAdapter.notifyDataSetChanged();
+                }
 
             }
 
