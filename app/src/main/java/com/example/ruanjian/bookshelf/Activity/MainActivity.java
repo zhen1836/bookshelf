@@ -1,92 +1,163 @@
 package com.example.ruanjian.bookshelf.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.ruanjian.bookshelf.Entity.Book;
+import com.example.ruanjian.bookshelf.Entity.Bookshelf;
+import com.example.ruanjian.bookshelf.Entity.Label;
 import com.example.ruanjian.bookshelf.R;
 import com.example.ruanjian.bookshelf.Widget.BookAdapter;
-import com.github.clans.fab.FloatingActionMenu;
+import com.example.ruanjian.bookshelf.Widget.BookCollectionOperater;
+import com.example.ruanjian.bookshelf.Widget.BytesBitmap;
+import com.example.ruanjian.bookshelf.Widget.RecyclerViewItemClickListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private Spinner spinner;
+    private List<String> spinnerList = new ArrayList<>();
+    private NavigationView navigationView;
     private CoordinatorLayout appBarMainLayout;
     private RecyclerView bookListView;
     private BookAdapter bookAdapter;
+    //是否选中了书架
+    private boolean isInBookshelf = false;
+    //所有书籍列表
     private List<Book> bookList;
+    //当前所选书架书籍列表
+    private List<Book> curBookList;
+    //当前显示的书籍列表
+    private List<Book> tmpList;
+    private List<Label> labels = new ArrayList<>();
+    private List<Bookshelf> bookshelves = new ArrayList<>();
+    private int book_position = -1;
+    private static int REQUEST_CODE=1;
+
+    private Book book_clicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BookCollectionOperater operater = new BookCollectionOperater();
+        bookList = operater.load(getBaseContext());
+
+        if (bookList == null) {
+            bookList = new ArrayList<>();
+            bookListInit();
+        }
+        
+        //labels = (ArrayList<Label>)getIntent().getSerializableExtra("labels") ;
+        //bookshelves = (ArrayList<Bookshelf>)getIntent().getSerializableExtra("shelfs") ;
+
         appBarMainLayout = (CoordinatorLayout)findViewById(R.id.appBarMain);
+
         //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //初始化书籍列表view
 
+        tmpList = bookList;
+        bookListView = (RecyclerView)findViewById(R.id.booklist_recycler_view);
+        bookAdapter = new BookAdapter(tmpList);
+        bookListView.setLayoutManager(new LinearLayoutManager(this));
+        bookListView.setAdapter(bookAdapter);
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        FloatingActionMenu fab = (FloatingActionMenu)findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //导航栏spinner初始化
+        spinner = (Spinner)findViewById(R.id.spinner);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerList);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new SpinnerItemSelectedListener());
+        //左侧抽屉初始化
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //绘制左边抽屉列表
+        Paint_Menu();
 
-        //初始化书籍列表view
-        bookList = new ArrayList<>();
-        bookListInit();
-        bookListView = (RecyclerView)findViewById(R.id.booklist_recycler_view);
-        bookAdapter = new BookAdapter(bookList);
         bookListView.setLayoutManager(new LinearLayoutManager(this));
-        bookListView.setAdapter(bookAdapter);
+        bookListView.addOnItemTouchListener(new RecyclerViewItemClickListener(this, bookListView,
+                new RecyclerViewItemClickListener.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(View view, int position) {
 
-        Button test = (Button) findViewById(R.id.Test);
-        test.setOnClickListener(new ListClick());
+                        if (position != -1) {
+                            Intent intent = new Intent();
+                            intent.setClass(MainActivity.this,DetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("book",tmpList.get(position));
+                            bundle.putSerializable("labels",(Serializable) labels);
+                            bundle.putSerializable("shelfs",(Serializable) bookshelves);
+                            intent.putExtras(bundle);
+                            startActivityForResult(intent, REQUEST_CODE);
+                        }
+                        book_position = position;
+                    }
+                }));
+
+//        Button test = (Button) findViewById(R.id.test);
+//        test.setOnClickListener(new ListClick());
+
+
     }
 
-    class ListClick implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent();
-            intent.setClass(MainActivity.this, DetailActivity.class);
+//    class ListClick implements View.OnClickListener {
+//        @Override
+//        public void onClick(View v) {
+//            Intent intent = new Intent();
+//            intent.setClass(MainActivity.this,DetailActivity.class);
 //            Bundle bundle = new Bundle();
-//            bundle.putString("title","齐天大圣");
+//            bundle.putSerializable("book",bookList.get(0));
+//            bundle.putSerializable("labels",(Serializable) labels);
+//            bundle.putSerializable("shelfs",(Serializable) bookshelves);
+////            intent.putExtra("book",bookList.get(0));
+////
+////            intent.putExtra("labels",(Serializable) labels);
+//
 //            intent.putExtras(bundle);
-            intent.putExtra("book",bookList.get(1));
-            startActivity(intent);
-        }
-    }
-
+//            startActivity(intent);
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -124,37 +195,181 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
-        if (id == R.id.books) {
+        if (id == 0) {
             // Handle the camera action
-        } else if (id == R.id.search) {
+            //点击书籍
+        } else if (id == 1) {
+            //点击搜索
+        } else if (id == 2) {
+            //添加新标签
+            //弹出dialog
+            final EditText labelInput = new EditText(this);
+            new AlertDialog.Builder(this).setTitle("请输入标签名")
+                    .setView(labelInput)
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //new一个label
+                            if (labelInput.getText().length() != 0) {
+                                Label label = new Label(labelInput.getText().toString());
+                                labels.add(label);
+                                navigationView.getMenu().removeGroup(0);
+                                navigationView.getMenu().removeGroup(1);
+                                navigationView.getMenu().removeGroup(2);
+                                Paint_Menu();
+                            }
+                        }
+                    }).setNegativeButton("取消", null).show();
 
-        } else if (id == R.id.add_tag) {
-
-        } else if (id == R.id.setting) {
-
-        } else if (id == R.id.about) {
-
+        } else if (id == 3) {
+            //设置
+        } else if (id == 4) {
+            //关于
+        }
+        else if (id >= 5 && id <= 1000) {
+            //点击标签
+            Label curLabel = labels.get(id-5);
+            List<Book> tmp = null;
+            if (isInBookshelf) {
+                tmp = selectBookByLabel(curBookList, curLabel);
+            }
+            else {
+                tmp = selectBookByLabel(bookList, curLabel);
+            }
+            refresh(tmp);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    private List<Book> selectBookByLabel(List<Book> list, Label label) {
+        List<Book> newList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            List<Label> subLabels = list.get(i).getLabels();
+            if (subLabels.contains(label)) {
+                newList.add(list.get(i));
+                break;
+            }
+        }
+        return newList;
+    }
+
+    class SpinnerItemSelectedListener implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+            String selected = spinnerList.get(position);
+            if (selected.equals("所有")) {
+                tmpList = bookList;
+                bookListView.setAdapter(new BookAdapter(tmpList));
+                isInBookshelf = false;
+            }
+            else {
+                isInBookshelf = true;
+                List<Book> curList = new ArrayList<>();
+                for (int i = 0; i < bookList.size(); i++) {
+                    List<Bookshelf> tmplist = bookList.get(i).getBookShelfs();
+                    for (Bookshelf bookshelf : tmplist) {
+                        if (bookshelf.getTitle().equals(selected)) {
+                            curList.add(bookList.get(i));
+                            break;
+                        }
+                    }
+                }
+                curBookList = curList;
+                refresh(curBookList);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+    }
+
     //测试用书籍数据初始化
     private void bookListInit() {
-        for (int i = 0; i < 6; i++) {
+        spinnerList.add("所有");
+        for (int i = 0; i < 4; i++) {
             Book book = new Book();
             book.setAuthor("阿瑟·克拉克");
-            book.setCoverId(R.drawable.pic1);
-            book.setTitle("2001：太空漫游");
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pic1);
+            book.setCoverId(BytesBitmap.getBytes(bitmap));
+            book.setTitle("2001：太空漫游"+i+"");
             book.setTranslator("郝明义");
             book.setPublisher("上海文艺出版社");
             book.setISBN("9787532170692");
+            Label label = new Label("tag"+i+"");
+            labels.add(label);
+            book.addLabel(label);
+            Bookshelf bookshelf = new Bookshelf("bookshelf"+i+"");
+            spinnerList.add(bookshelf.getTitle());
+            book.addBookshelf(bookshelf);
             bookList.add(book);
         }
     }
 
+    //左侧抽屉绘制
+    private void Paint_Menu() {
+        navigationView.getMenu().add(0,0,0,"书籍").setIcon(R.drawable.books);
+        navigationView.getMenu().add(0,1,0,"搜索").setIcon(R.drawable.search);
+        for (int labelId = 0; labelId < labels.size(); labelId++) {
+            navigationView.getMenu().add(1,labelId+5,0,labels.get(labelId).getTitle());
+        }
+        navigationView.getMenu().add(1,2,0,"添加新标签").setIcon(R.drawable.add);
+        navigationView.getMenu().add(2,3,0,"设置").setIcon(R.drawable.ic_menu_manage);
+        navigationView.getMenu().add(2,4,0,"关于").setIcon(R.drawable.about);
+    }
+
+    //添加书架
+    private void AddBookshelf(String title) {
+        Bookshelf bookshelf = new Bookshelf(title);
+        bookshelves.add(bookshelf);
+        spinnerList.add(title);
+        ArrayAdapter spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerList);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new SpinnerItemSelectedListener());
+    }
+
+    //刷新
+    private void refresh(List<Book> list) {
+        tmpList = list;
+        bookListView.setAdapter(new BookAdapter(tmpList));
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //添加日记
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == DetailActivity.RESULT_CODE) {
+                if(book_position != -1) {
+                    book_clicked = (Book) data.getSerializableExtra("book");
+                    labels =(ArrayList<Label>) data.getSerializableExtra("labels");
+                    bookshelves = (ArrayList<Bookshelf>) data.getSerializableExtra("shelfs");
+                    bookList.get(book_position).setTitle(book_clicked.getTitle());
+                    bookList.get(book_position).setTranslator(book_clicked.getTranslator());
+                    bookList.get(book_position).setPublisher(book_clicked.getPublisher());
+                    bookList.get(book_position).setPubdate(book_clicked.getPubdate());
+                    bookList.get(book_position).setISBN(book_clicked.getISBN());
+                    bookList.get(book_position).setState(book_clicked.getState());
+                    bookList.get(book_position).setBookShelfs(book_clicked.getBookShelfs());
+                    bookList.get(book_position).setNotes(book_clicked.getNotes());
+                    bookList.get(book_position).setLabels(book_clicked.getLabels());
+                    bookList.get(book_position).setSourceWeb(book_clicked.getSourceWeb());
+
+                    BookCollectionOperater operater = new BookCollectionOperater();
+                    operater.save(MainActivity.this.getBaseContext(), (Serializable) bookList);
+                    refresh(bookList);
+                    bookAdapter.notifyDataSetChanged();
+                }
+                book_position = -1;
+
+            }
+
+        }
+    }
 
 }

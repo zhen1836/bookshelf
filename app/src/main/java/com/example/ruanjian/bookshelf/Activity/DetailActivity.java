@@ -1,23 +1,37 @@
 package com.example.ruanjian.bookshelf.Activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.ruanjian.bookshelf.Entity.Book;
+import com.example.ruanjian.bookshelf.Entity.Label;
 import com.example.ruanjian.bookshelf.R;
-
+import com.example.ruanjian.bookshelf.Widget.BytesBitmap;
 import com.klinker.android.sliding.SlidingActivity;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class DetailActivity extends SlidingActivity {
     private Book book_clicked;
+    private ArrayList<Label> labels;
+    private ArrayList<Label> bookshelfs;
+    private StringBuilder setlabel= new StringBuilder();
+
+    private static int REQUEST_CODE=1;
+    public final static int RESULT_CODE = 1;
 
     @Override
     public void init(Bundle savedInstanceState) {
         book_clicked = (Book) getIntent().getSerializableExtra("book");
+        labels = (ArrayList<Label>)getIntent().getSerializableExtra("labels") ;
+        bookshelfs = (ArrayList<Label>)getIntent().getSerializableExtra("shelfs") ;
         //String s1 = getIntent().getStringExtra("title");
         setTitle(book_clicked.getTitle());
         setPrimaryColors(
@@ -31,9 +45,13 @@ public class DetailActivity extends SlidingActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent();
                         intent.setClass(DetailActivity.this, EditActivity.class);
-                        //Bundle bundle = new Bundle();
-                        intent.putExtra("book",book_clicked);
-                        startActivity(intent);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("book",book_clicked);
+                        bundle.putSerializable("labels",(Serializable) labels);
+                        bundle.putSerializable("shelfs",(Serializable) bookshelfs);
+                        //intent.putExtra("book",book_clicked);
+                        intent.putExtras(bundle);
+                        startActivityForResult(intent, REQUEST_CODE);
                     }
                 }
         );
@@ -41,6 +59,7 @@ public class DetailActivity extends SlidingActivity {
     }
 
     void setdetailInfo(){
+        ImageView img = (ImageView) findViewById(R.id.book_img);
         RelativeLayout author = (RelativeLayout) findViewById(R.id.author_item);
         TextView authortext = (TextView) findViewById(R.id.author_text);
         RelativeLayout translator = (RelativeLayout) findViewById(R.id.translator_item);
@@ -61,6 +80,12 @@ public class DetailActivity extends SlidingActivity {
         TextView labeltext = (TextView) findViewById(R.id.label_text);
         RelativeLayout web = (RelativeLayout) findViewById(R.id.web_item);
         TextView webtext = (TextView) findViewById(R.id.web_text);
+        TextView source = (TextView) findViewById(R.id.Info_source);
+
+        if (book_clicked.getCoverId() != null){
+            Bitmap bitmap = BytesBitmap.getBitmap(book_clicked.getCoverId());
+            img.setImageBitmap(bitmap);
+        }
 
         if(book_clicked.getAuthor() != null)
             authortext.setText(book_clicked.getAuthor());
@@ -90,10 +115,10 @@ public class DetailActivity extends SlidingActivity {
         if(book_clicked.getState() != null)
             statetext.setText(book_clicked.getState());
         else
-            state.setVisibility(View.GONE);
+            statetext.setText("阅读状态未设置");;
 
-        if(book_clicked.getBelongBookShelf() != null)
-            shelftext.setText(book_clicked.getBelongBookShelf());
+        if(book_clicked.getBookShelfs().size() != 0)
+            shelftext.setText(book_clicked.getBookShelfs().get(0).getTitle());
         else
             shelf.setVisibility(View.GONE);
 
@@ -102,17 +127,39 @@ public class DetailActivity extends SlidingActivity {
         else
             note.setVisibility(View.GONE);
 
-        if(book_clicked.getTag() != null)
-            labeltext.setText(book_clicked.getTag());
+        if(book_clicked.getLabels().size() != 0){
+            setlabel.append(book_clicked.getLabels().get(0).getTitle());
+            for(int i = 1; i < book_clicked.getLabels().size(); i++){
+                setlabel.append("，"+book_clicked.getLabels().get(i).getTitle());
+            }
+            labeltext.setText(setlabel.toString());
+        }
         else
             label.setVisibility(View.GONE);
 
-        if(book_clicked.getSourceWeb() != null)
+        if(book_clicked.getSourceWeb() != null) {
             webtext.setText(book_clicked.getSourceWeb());
-        else
+            //source.setText("信息（来源：" + book_clicked.getSourceWeb().substring(14,24) + ")");
+        }
+        else {
             web.setVisibility(View.GONE);
-
+            source.setText("信息（来源：Manually)");
+        }
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //添加日记
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == EditActivity.RESULT_CODE) {
+                setResult(RESULT_CODE, data);
+                finish();
+
+            }
+
+        }
+    }
+
+
 
 
 }

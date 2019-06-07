@@ -1,6 +1,7 @@
 package com.example.ruanjian.bookshelf.Widget;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.VH> {
     Context context;
-    List<Book> bookList;
+    private List<Book> bookList;
 
     public BookAdapter(List<Book> bookList) {
         this.bookList = bookList;
@@ -27,7 +28,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.VH> {
         private TextView title;
         private TextView info;
         private TextView pubDate;
-        public VH(@NonNull View itemView) {
+        VH(@NonNull View itemView) {
             super(itemView);
             cover = (ImageView)itemView.findViewById(R.id.bookPic);
             title = (TextView)itemView.findViewById(R.id.bookTitle);
@@ -46,7 +47,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.VH> {
     @Override
     public void onBindViewHolder(@NonNull VH viewHolder, int position) {
         Book book = bookList.get(position);
-        viewHolder.cover.setImageResource(book.getCoverId());
+        Bitmap bitmap = BytesBitmap.getBitmap(book.getCoverId());
+        viewHolder.cover.setImageBitmap(bitmap);
+        //viewHolder.cover.setImageResource(book.getCoverId().getBitmapBytes());
         viewHolder.title.setText(book.getTitle());
         final String info = book.getAuthor()+" 著, "+book.getPublisher();
         viewHolder.info.setText(info);
