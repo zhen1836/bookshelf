@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
             bookList = new ArrayList<>();
             bookListInit();
         }
-        
+
         //labels = (ArrayList<Label>)getIntent().getSerializableExtra("labels") ;
         //bookshelves = (ArrayList<Bookshelf>)getIntent().getSerializableExtra("shelfs") ;
 
