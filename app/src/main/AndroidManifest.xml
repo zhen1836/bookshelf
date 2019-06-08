@@ -31,8 +31,7 @@
 
         <activity
             android:name=".Activity.EditActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name = "actionName"/>
                 <category android:name = "android.intent.category.DEFAULT"/>

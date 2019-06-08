@@ -666,7 +666,7 @@ public class EditActivity extends AppCompatActivity {
         //在这里跳转到手机系统相册里面
         Intent intent = new Intent(
                 Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, ALBUM_RESULT_CODE);

@@ -31,11 +31,14 @@ import com.example.ruanjian.bookshelf.Entity.Bookshelf;
 import com.example.ruanjian.bookshelf.Entity.Label;
 import com.example.ruanjian.bookshelf.R;
 import com.example.ruanjian.bookshelf.Widget.BookAdapter;
+import com.example.ruanjian.bookshelf.Widget.BookCollectionOperater;
 import com.example.ruanjian.bookshelf.Widget.BytesBitmap;
+import com.example.ruanjian.bookshelf.Widget.RecyclerViewItemClickListener;
 import com.github.clans.fab.FloatingActionMenu;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,12 +65,29 @@ public class MainActivity extends AppCompatActivity
     private List<Book> tmpList;
     private List<Label> labels = new ArrayList<>();
     private List<Bookshelf> bookshelves = new ArrayList<>();
+    private int book_position = -1;
+    private static int REQUEST_CODE=1;
+
+    private Book book_clicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BookCollectionOperater operater = new BookCollectionOperater();
+        bookList = operater.load(getBaseContext());
+
+        if (bookList == null) {
+            bookList = new ArrayList<>();
+            bookListInit();
+        }
+
+        //labels = (ArrayList<Label>)getIntent().getSerializableExtra("labels") ;
+        //bookshelves = (ArrayList<Bookshelf>)getIntent().getSerializableExtra("shelfs") ;
+
         appBarMainLayout = (CoordinatorLayout)findViewById(R.id.appBarMain);
+
         //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,8 +98,7 @@ public class MainActivity extends AppCompatActivity
         mSearchView.setOnQueryTextListener(new searchListener());
 
         //初始化书籍列表view
-        bookList = new ArrayList<>();
-        bookListInit();
+
         tmpList = bookList;
         bookListView = (RecyclerView)findViewById(R.id.booklist_recycler_view);
         bookAdapter = new BookAdapter(tmpList);
@@ -121,31 +140,64 @@ public class MainActivity extends AppCompatActivity
         //绘制左边抽屉列表
         Paint_Menu();
 
-
-        //初始化书籍列表view
-        bookList = new ArrayList<>();
-        bookListInit();
-        bookListView = (RecyclerView)findViewById(R.id.booklist_recycler_view);
-        bookAdapter = new BookAdapter(bookList);
         bookListView.setLayoutManager(new LinearLayoutManager(this));
-        bookListView.setAdapter(bookAdapter);
+        bookListView.addOnItemTouchListener(new RecyclerViewItemClickListener(this, bookListView,
+                new RecyclerViewItemClickListener.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(View view, int position) {
 
-}
+                        if (position != -1) {
+                            Intent intent = new Intent();
+                            intent.setClass(MainActivity.this,DetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("book",tmpList.get(position));
+                            bundle.putSerializable("labels",(Serializable) labels);
+                            bundle.putSerializable("shelfs",(Serializable) bookshelves);
+                            intent.putExtras(bundle);
+                            startActivityForResult(intent, REQUEST_CODE);
+                        }
+                        book_position = position;
+                    }
+                }));
+
+//        Button test = (Button) findViewById(R.id.test);
+//        test.setOnClickListener(new ListClick());
+
+
+    }
+
+//    class ListClick implements View.OnClickListener {
+//        @Override
+//        public void onClick(View v) {
+//            Intent intent = new Intent();
+//            intent.setClass(MainActivity.this,DetailActivity.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable("book",bookList.get(0));
+//            bundle.putSerializable("labels",(Serializable) labels);
+//            bundle.putSerializable("shelfs",(Serializable) bookshelves);
+////            intent.putExtra("book",bookList.get(0));
+////
+////            intent.putExtra("labels",(Serializable) labels);
+//
+//            intent.putExtras(bundle);
+//            startActivity(intent);
+//        }
+//    }
 
     // 扫描二维码/条码回传
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
-            if (data != null) {
-
-                String content = data.getStringExtra(Constant.CODED_CONTENT);
-                Log.v("ISBN",content);
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//
+//        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+//            if (data != null) {
+//
+//                String content = data.getStringExtra(Constant.CODED_CONTENT);
+//                Log.v("ISBN",content);
+//            }
+//        }
+//    }
 
 
 
@@ -286,7 +338,7 @@ public class MainActivity extends AppCompatActivity
     //测试用书籍数据初始化
     private void bookListInit() {
         spinnerList.add("所有");
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 4; i++) {
             Book book = new Book();
             book.setAuthor("阿瑟·克拉克");
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pic1);
@@ -360,4 +412,51 @@ public class MainActivity extends AppCompatActivity
             return false;
         }
     }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //添加日记
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == DetailActivity.RESULT_CODE) {
+                book_clicked = (Book) data.getSerializableExtra("book");
+                labels =(ArrayList<Label>) data.getSerializableExtra("labels");
+                bookshelves = (ArrayList<Bookshelf>) data.getSerializableExtra("shelfs");
+                if(book_position != -1) {
+                    bookList.get(book_position).setCoverId(book_clicked.getCoverId());
+                    bookList.get(book_position).setTitle(book_clicked.getTitle());
+                    bookList.get(book_position).setTranslator(book_clicked.getTranslator());
+                    bookList.get(book_position).setPublisher(book_clicked.getPublisher());
+                    bookList.get(book_position).setPubdate(book_clicked.getPubdate());
+                    bookList.get(book_position).setISBN(book_clicked.getISBN());
+                    bookList.get(book_position).setState(book_clicked.getState());
+                    bookList.get(book_position).setBookShelfs(book_clicked.getBookShelfs());
+                    bookList.get(book_position).setNotes(book_clicked.getNotes());
+                    bookList.get(book_position).setLabels(book_clicked.getLabels());
+                    bookList.get(book_position).setSourceWeb(book_clicked.getSourceWeb());
+
+                    BookCollectionOperater operater = new BookCollectionOperater();
+                    operater.save(MainActivity.this.getBaseContext(), (Serializable) bookList);
+                    refresh(bookList);
+                    bookAdapter.notifyDataSetChanged();
+                    book_position = -1;
+                }
+                else {
+                    bookList.add(book_clicked);
+
+                    BookCollectionOperater operater = new BookCollectionOperater();
+                    operater.save(MainActivity.this.getBaseContext(), (Serializable) bookList);
+                    refresh(bookList);
+                    bookAdapter.notifyDataSetChanged();
+                }
+
+            }
+
+        }
+        else if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+            if (data != null) {
+
+                String content = data.getStringExtra(Constant.CODED_CONTENT);
+                Log.v("ISBN",content);
+            }
+        }
+    }
+
 }
