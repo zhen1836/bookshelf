@@ -277,6 +277,12 @@ public class EditActivity extends AppCompatActivity {
         state_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, All_state);
         state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         state.setAdapter(state_adapter);
+        for(int i=0;i<state_adapter.getCount();i++){
+            if(book_clicked.equals(state_adapter.getItem(i))){
+                state.setSelection(i,true);// 默认选中项
+                break;
+            }
+        }
     }
 
     private void shelf_init(){
@@ -463,7 +469,6 @@ public class EditActivity extends AppCompatActivity {
     private void save() {
         //Toast.makeText(EditActivity.this, "Save !", Toast.LENGTH_SHORT).show();
         Bitmap bitmap2 = ((BitmapDrawable)imgButton.getDrawable()).getBitmap();
-        //book_clicked.setCoverId(new MyBitmap(BytesBitmap.getBytes(bitmap)));
         book_clicked.setCoverId(BytesBitmap.getBytes(bitmap2));
         if(titletext.getText().length() == 0){
             Toast.makeText(EditActivity.this, "标题不能为空！", Toast.LENGTH_SHORT).show();

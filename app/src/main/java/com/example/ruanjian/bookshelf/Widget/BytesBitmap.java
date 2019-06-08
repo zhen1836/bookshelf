@@ -7,9 +7,7 @@ import android.graphics.Matrix;
 import java.io.ByteArrayOutputStream;
 
 /**
- * 因为Bitmap没有实现序列化，所以不能直接在序列化类(MyBitmap)中使用
  * BytesBitmap用于实现Bitmap和byte[]间的相互转换
- *
  */
 public class BytesBitmap {
     public static Bitmap getBitmap(byte[] data) {
