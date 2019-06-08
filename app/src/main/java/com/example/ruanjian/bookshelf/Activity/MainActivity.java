@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -121,6 +122,16 @@ public class MainActivity extends AppCompatActivity
         Paint_Menu();
 
 
+        //初始化书籍列表view
+        bookList = new ArrayList<>();
+        bookListInit();
+        bookListView = (RecyclerView)findViewById(R.id.booklist_recycler_view);
+        bookAdapter = new BookAdapter(bookList);
+        bookListView.setLayoutManager(new LinearLayoutManager(this));
+        bookListView.setAdapter(bookAdapter);
+
+        Button test = (Button) findViewById(R.id.Test);
+        test.setOnClickListener(new ListClick());
     }
 
     // 扫描二维码/条码回传
@@ -137,6 +148,20 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+    class ListClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, DetailActivity.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("title","齐天大圣");
+//            intent.putExtras(bundle);
+            intent.putExtra("book",bookList.get(1));
+            startActivity(intent);
+        }
+    }
+
 
     @Override
     public void onBackPressed() {

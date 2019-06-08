@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/edit_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        android:theme="@style/AppTheme">
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/book_img"
+                android:layout_width="132dp"
+                android:layout_height="176dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="70dp"
+                app:srcCompat="@android:drawable/ic_input_get" />
+
+            <LinearLayout
+                android:id="@+id/LL_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="150dp"
+                android:layout_marginTop="70dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:text="标题:"
+                    android:textSize="24dp" />
+
+                <EditText
+                    android:id="@+id/et_title"
+                    android:layout_width="180dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="-51dp"
+                    android:ems="10"
+                    android:hint="标题"
+                    android:inputType="textLongMessage"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="true"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL_title"
+                android:layout_marginStart="150dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:text="作者:"
+                    android:textSize="24dp" />
+
+                <EditText
+                    android:id="@+id/et_author"
+                    android:layout_width="180dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="-51dp"
+                    android:ems="10"
+                    android:hint="多个请用逗号隔开"
+                    android:inputType="textLongMessage"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="true"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL_translator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL_author"
+                android:layout_marginStart="150dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_translator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:text="译者:"
+                    android:textSize="24dp" />
+
+                <EditText
+                    android:id="@+id/et_translator"
+                    android:layout_width="180dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="-51dp"
+                    android:ems="10"
+                    android:inputType="textLongMessage"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="true"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL_publisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL_translator"
+                android:layout_marginStart="150dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_publisher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:text="出版社:"
+                    android:textSize="24dp" />
+
+                <EditText
+                    android:id="@+id/et_publisher"
+                    android:layout_width="156dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="-51dp"
+                    android:ems="10"
+                    android:hint="出版社"
+                    android:inputType="textLongMessage"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="true"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL_pubdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL_publisher"
+                android:layout_marginStart="150dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_pubdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:text="出版时间:"
+                    android:textSize="24dp" />
+
+                <EditText
+                    android:id="@+id/et_pubdate_year"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="-51dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="年"
+                    android:inputType="date" />
+
+                <TextView
+                    android:id="@+id/connection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/et_pubdate_month"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="-51dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="月"
+                    android:inputType="date" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL_ISBN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL_pubdate"
+                android:layout_marginStart="150dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_ISBN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:text="ISBN:"
+                    android:textSize="24dp" />
+
+                <EditText
+                    android:id="@+id/et_ISBN"
+                    android:layout_width="187dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:digits="1234567890"
+                    android:ems="10"
+                    android:hint="ISBN"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/edit_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL_ISBN"
+                android:layout_alignStart="@+id/book_img"
+                android:layout_alignLeft="@+id/book_img"
+                android:layout_marginTop="10dp"
+                android:text="详情(来源：)"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/dividing_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/edit_detail"
+                android:layout_alignStart="@+id/book_img"
+                android:layout_alignLeft="@+id/book_img"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:id="@+id/LL_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dividing_line"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:id="@+id/img_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+                <Spinner
+                    android:id="@+id/state_spinner"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="189dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="false"
+                    android:layout_marginStart="23dp"
+                    android:alwaysDrawnWithCache="false"
+                    android:longClickable="false"
+                    android:minWidth="150dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL_shelf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL_state"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:id="@+id/img_shelf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+                <Spinner
+                    android:id="@+id/shelf_spinner"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="189dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="false"
+                    android:layout_marginStart="23dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL_shelf"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:id="@+id/img_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+                <EditText
+                    android:id="@+id/et_note"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="23dp"
+                    android:ems="10"
+                    android:hint="笔记"
+                    android:inputType="textLongMessage"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="false"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL_note"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:id="@+id/img_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+                <EditText
+                    android:id="@+id/et_label"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="23dp"
+                    android:ems="10"
+                    android:hint="添加标签"
+                    android:inputType="textLongMessage"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="false"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL_web"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL_label"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:id="@+id/img_web"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+                <EditText
+                    android:id="@+id/et_web"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="23dp"
+                    android:ems="10"
+                    android:hint="网站"
+                    android:inputType="textLongMessage"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="false"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
