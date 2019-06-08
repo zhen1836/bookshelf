@@ -20,6 +20,8 @@ public class Book implements Serializable {
     private String notes;
     private List<Label> labels;
     private String sourceWeb;
+    private String tag;
+    private String belongBookShelf;
 
     public Book() {
         this.id = UUID.randomUUID();
@@ -133,5 +135,15 @@ public class Book implements Serializable {
 
     public void setSourceWeb(String sourceWeb) {
         this.sourceWeb = sourceWeb;
+    }
+
+    public String getTag(){
+        return tag;
+    }
+    public void setBelongBookShelf(String belongBookShelf) {
+        this.belongBookShelf = belongBookShelf;
+    }
+    public void getBelongBookShelf(String belongBookShelf) {
+        this.belongBookShelf = belongBookShelf;
     }
 }
